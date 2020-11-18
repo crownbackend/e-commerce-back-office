@@ -9,6 +9,7 @@ import store from './store'
 Vue.config.performance = true
 Vue.use(CoreuiVue)
 Vue.prototype.$log = console.log.bind(console)
+Vue.prototype.$hostName = 'http://127.0.0.1:8000/api'
 
 new Vue({
   el: '#app',

@@ -6,12 +6,15 @@
           <CCardGroup>
             <CCard class="p-4">
               <CCardBody>
-                <CForm>
-                  <h1>Login</h1>
-                  <p class="text-muted">Sign In to your account</p>
+                <CForm @submit.prevent="login">
+                  <h1>Connexion</h1>
+                  <CAlert color="danger" v-if="errorMessage">
+                    {{errorMessage}}
+                  </CAlert>
                   <CInput
                     placeholder="Username"
                     autocomplete="username email"
+                    v-model="username"
                   >
                     <template #prepend-content><CIcon name="cil-user"/></template>
                   </CInput>
@@ -19,12 +22,18 @@
                     placeholder="Password"
                     type="password"
                     autocomplete="curent-password"
+                    v-model="password"
                   >
                     <template #prepend-content><CIcon name="cil-lock-locked"/></template>
                   </CInput>
                   <CRow>
                     <CCol col="6" class="text-left">
-                      <CButton color="primary" class="px-4">Login</CButton>
+                      <div v-if="loading">
+                        <CSpinner size="5xl" color="success"/>
+                      </div>
+                      <div v-else>
+                        <CButton color="primary" type="submit" class="px-4">Login</CButton>
+                      </div>
                     </CCol>
                     <CCol col="6" class="text-right">
                       <CButton color="link" class="px-0">Forgot password?</CButton>
@@ -41,15 +50,8 @@
               body-wrapper
             >
               <CCardBody>
-                <h2>Sign up</h2>
+                <h2>Back office ecommerce</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <CButton
-                  color="light"
-                  variant="outline"
-                  size="lg"
-                >
-                  Register Now!
-                </CButton>
               </CCardBody>
             </CCard>
           </CCardGroup>
@@ -61,6 +63,47 @@
 
 <script>
 export default {
-  name: 'Login'
+  name: 'Login',
+  data() {
+    return {
+      username: null,
+      password: null,
+      loading: false,
+      errorMessage: null,
+      formValid: false
+    }
+  },
+  methods: {
+    login() {
+      if(this.username === null || this.password === null) {
+        this.errorMessage = "Champs requie !"
+        this.loading = false
+      } else {
+        let username = this.username;
+        let password = this.password;
+        this.loading = true
+        this.$store.dispatch('login', {username, password}, this.loading)
+            .then(response => {
+              if(response.data.enable === 0) {
+                this.errorMessage = "Votre compte na pas encore été activé."
+                this.loading = false
+              } else if(response.data.notAccount === 0) {
+                this.errorMessage = "Utilisateur non trouvé veuillez vous créer un compte."
+                this.loading = false
+              } else if(response.data.errorLogin === 0) {
+                this.errorMessage = "Votre identifiant ou mot de passe est incorrect."
+                this.loading = false
+              }else {
+                this.loading = false
+                this.$router.push('/')
+              }
+            })
+            .catch(() => {
+              alert('Erreur serveur !')
+            })
+      }
+
+    }
+  }
 }
 </script>

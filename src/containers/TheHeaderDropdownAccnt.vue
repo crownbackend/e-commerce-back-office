@@ -56,11 +56,8 @@
       <CBadge color="primary" class="ml-auto">{{ itemsCount }}</CBadge>
     </CDropdownItem>
     <CDropdownDivider/>
-    <CDropdownItem>
-      <CIcon name="cil-shield-alt" /> Lock Account
-    </CDropdownItem>
-    <CDropdownItem>
-      <CIcon name="cil-lock-locked" /> Logout
+    <CDropdownItem @click="logout">
+      <CIcon name="cil-lock-locked" /> Deconnexion
     </CDropdownItem>
   </CDropdown>
 </template>
@@ -72,6 +69,20 @@ export default {
     return { 
       itemsCount: 42
     }
+  },
+  computed: {
+    isLoggedIn(){
+      return this.$store.getters.isLoggedIn
+    }
+  },
+  methods: {
+    logout: function () {
+      this.$store.dispatch('logout')
+          .then(() => {
+            this.$router.push({path: "/"}).catch(() => {})
+          })
+      this.$router.go(this.$router.currentRoute)
+    },
   }
 }
 </script>
