@@ -9,16 +9,14 @@ const TheContainer = () => import('@/containers/TheContainer')
 // Views
 const Dashboard = () => import('@/views/Dashboard')
 
-const Charts = () => import('@/views/charts/Charts')
-const Widgets = () => import('@/views/widgets/Widgets')
-
 
 // Users
-const Users = () => import('@/views/users/Users')
-const User = () => import('@/views/users/User')
+const Users = () => import('@/components/users/Users')
+const User = () => import('@/components/users/User')
+const UserEdit = () => import('@/components/users/EditUser')
 
 // login
-const Login = () => import('@/views/pages/Login')
+const Login = () => import('@/components/security/Login')
 
 Vue.use(Router)
 const router = new Router({
@@ -44,16 +42,6 @@ function configRoutes () {
           component: Dashboard
         },
         {
-          path: 'charts',
-          name: 'Charts',
-          component: Charts
-        },
-        {
-          path: 'widgets',
-          name: 'Widgets',
-          component: Widgets
-        },
-        {
           path: 'users',
           meta: {
             label: 'Users'
@@ -71,11 +59,13 @@ function configRoutes () {
             },
             {
               path: ':id',
-              meta: {
-                label: 'User Details'
-              },
               name: 'User',
               component: User
+            },
+            {
+              path: ':id/edit',
+              name: 'UserEdit',
+              component: UserEdit
             }
           ]
         },

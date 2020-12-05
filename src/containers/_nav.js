@@ -14,7 +14,7 @@ export default [
       },
       {
         _name: 'CSidebarNavTitle',
-        _children: ['Components']
+        _children: ['Catalogue']
       },
       {
         _name: 'CSidebarNavDropdown',
@@ -30,9 +30,9 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'Charts',
-        to: '/charts',
-        icon: 'cil-chart-pie'
+        name: 'Utilisateurs',
+        to: '/users',
+        icon: 'cil-user'
       },
       {
         _name: 'CSidebarNavDivider',
