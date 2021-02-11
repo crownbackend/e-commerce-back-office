@@ -14,6 +14,7 @@ const Dashboard = () => import('@/views/Dashboard')
 const Users = () => import('@/components/users/Users')
 const User = () => import('@/components/users/User')
 const UserEdit = () => import('@/components/users/EditUser')
+const UserCreate = () => import('@/components/users/CreateUser')
 
 // login
 const Login = () => import('@/components/security/Login')
@@ -66,6 +67,11 @@ function configRoutes () {
               path: ':id/edit',
               name: 'UserEdit',
               component: UserEdit
+            },
+            {
+              path: '/create/user',
+              name: 'UserCreate',
+              component: UserCreate
             }
           ]
         },

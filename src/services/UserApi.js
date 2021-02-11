@@ -17,6 +17,18 @@ class UserApi {
         return axios.get(Vue.prototype.$hostName+'/users/user/'+id)
     }
 
+    createUser(email, lastName, firstName, address, city, telephone) {
+        let data = {
+            email: email,
+            lastName: lastName,
+            firstName: firstName,
+            address: address,
+            city: city,
+            telephone: telephone,
+        }
+        return axios.post(Vue.prototype.$hostName+'/users/', data)
+    }
+
     editUser(id, email, lastName, firstName, address, enabled, city, telephone) {
         let formData = new FormData()
         formData.append("email", email)

@@ -4,6 +4,9 @@
       <CCard>
         <CCardHeader>
           Nombres de personnes inscrites: <strong>{{usersCount}}</strong>
+          <router-link :to="{name: 'UserCreate'}" style="float: right">
+            <i class="far fa-plus-square fa-3x"></i>
+          </router-link>
         </CCardHeader>
         <CCardBody>
           <div>
