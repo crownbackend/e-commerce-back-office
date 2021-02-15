@@ -55,6 +55,16 @@ class UserApi {
         formData.append("search", search)
         return axios.post(Vue.prototype.$hostName+'/users/search/user', formData)
     }
+
+    verifyEmail(email) {
+        let formData = new FormData()
+        formData.append("email", email)
+        return axios.post(Vue.prototype.$hostName+'/users/check/email/validate', formData)
+    }
+
+    verifyAddress(address) {
+        return axios.get('https://nominatim.openstreetmap.org/search?format=json&q='+address+'&limit=5&addressdetails=1')
+    }
 }
 
 export default new UserApi();
