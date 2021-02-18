@@ -63,7 +63,7 @@ class UserApi {
     }
 
     verifyAddress(address) {
-        return axios.get('https://nominatim.openstreetmap.org/search?format=json&q='+address+'&limit=5&addressdetails=1')
+        return axios.get(Vue.prototype.$hostName+'/users/check/address/'+ address)
     }
 }
 
