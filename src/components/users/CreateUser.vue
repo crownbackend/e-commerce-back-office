@@ -38,7 +38,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="address">Adresse*</label>
-                  <input type="text" v-model="address" autocomplete="nope" @keyup="checkAddress(address)" class="form-control" id="real-address">
+                  <input type="text" v-model="address" autocomplete="nope" @keyup="checkAddress(address)" :class="{'is-valid': addressValidate}" class="form-control" id="real-address">
                   <div class="spinner-border" v-if="spinner" role="status">
                     <span class="sr-only">Loading...</span>
                   </div>
@@ -60,15 +60,15 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="city">Ville*</label>
-                  <input type="text" v-model="city" @keyup="checkCity(city)" autocomplete="nope" class="form-control" id="real-city">
+                  <input type="text" v-model="city" @keyup="checkCity(city)" autocomplete="nope" :class="{'is-valid': cityValidate}" class="form-control" id="real-city">
                 </div>
               </div>
             </div>
             <div class="form-group">
               <label for="telephone">Téléphone*</label>
-              <input type="text" v-model="telephone" autocomplete="nope" @keyup="checkTelephone(telephone)" class="form-control" id="real-telephone">
+              <input type="text" v-model="telephone" autocomplete="nope" @keyup="checkTelephone(telephone)" :class="{'is-valid': telephoneValidate}" class="form-control" id="real-telephone">
             </div>
-            <CButton color="primary" type="submit" class="px-4" :class="{'btn-submit': disabled}" :disabled="disabled">Sauvegarder</CButton>
+            <CButton color="primary" type="submit" class="px-4" :class="{'btn-submit': disabled}" :disabled="disabled">Sauvegarder  <CSpinner v-if="formSubmit" size="sm" color="info"/></CButton>
           </form>
         </div>
       </CCardBody>
@@ -100,19 +100,24 @@ export default {
       cites: [],
       spinner: false,
       errors: [],
-      disabled: true
+      disabled: true,
+      formSubmit: false
     }
   },
   methods: {
     submitForm() {
       if(this.disabled === false) {
+        this.formSubmit = true
         UserApi.createUser(this.email, this.lastName, this.firstName,
             this.address, this.city, this.telephone)
             .then(response => {
-              console.log(response)
+              if(response.data.created == 1) {
+                this.formSubmit = false
+                this.$router.push({name: "Users"})
+              }
             })
-            .catch((response) => {
-              console.log(response)
+            .catch( () => {
+              alert('Erreur serveur')
             })
       }
     },
@@ -148,27 +153,27 @@ export default {
         this.emailValidate = false
       }
     },
-    checkFirstName(name) {
-      if(name.length < 2) {
+    checkFirstName() {
+      if(this.firstName !== null && this.firstName.length < 2) {
         this.firstNameValidate = false
       } else {
         this.firstNameValidate = true
       }
     },
-    checkLastName(name) {
-      if(name.length < 2) {
+    checkLastName() {
+      if(this.lastName !== null && this.lastName.length < 2) {
         this.lastNameValidate = false
       } else {
         this.lastNameValidate = true
       }
     },
-    checkAddress(address) {
+    checkAddress() {
       this.spinner = true
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        if(address) {
+        if(this.address) {
           this.addressValidate = true
-          UserApi.verifyAddress(address)
+          UserApi.verifyAddress(this.address)
               .then(response => {
                 this.spinner = false
                 this.cites = response.data.features
@@ -188,17 +193,17 @@ export default {
       this.cityValidate = true
       this.addressValidate = true
     },
-    checkTelephone(telephone) {
+    checkTelephone() {
       let re = /^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$/
-      let result = re.test(telephone)
+      let result = re.test(this.telephone)
       if(result) {
         this.telephoneValidate = true
       } else {
         this.telephoneValidate = false
       }
     },
-    checkCity(name) {
-      if(name.length < 3) {
+    checkCity() {
+      if(this.city.length < 3) {
         this.cityValidate = false
       } else {
         this.cityValidate = true

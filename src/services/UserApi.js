@@ -42,6 +42,10 @@ class UserApi {
         return axios.post(Vue.prototype.$hostName+'/users/user/'+id+'/edit', formData)
     }
 
+    deleteUser(id) {
+        return axios.delete(Vue.prototype.$hostName+'/users/user/'+id+'/delete')
+    }
+
     filterUsers(filter) {
         return axios.get(Vue.prototype.$hostName+'/users/'+filter)
     }

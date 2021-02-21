@@ -4,7 +4,7 @@
       <CCard>
         <CCardHeader>
           Nombres de personnes inscrites: <strong>{{usersCount}}</strong>
-          <router-link :to="{name: 'UserCreate'}" style="float: right">
+          <router-link :to="{name: 'UserCreate'}" title="Ajouter un utilisateur" style="float: right">
             <i class="far fa-plus-square fa-3x"></i>
           </router-link>
         </CCardHeader>
@@ -65,10 +65,10 @@
                 <router-link :to="{name: 'User', params: {id: user.id}}" class="btn btn-primary">
                   <i class="far fa-eye"></i>
                 </router-link>
-                <router-link :to="{name: 'UserEdit', params: {id: user.id}}" class="btn btn-warning" >
+                <router-link :to="{name: 'UserEdit', params: {id: user.id}}" class="btn btn-warning">
                   <i class="far fa-edit"></i>
                 </router-link>
-                <button class="btn btn-danger">
+                <button @click="deleteUser(user.id)" class="btn btn-danger">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </td>
@@ -150,6 +150,16 @@ export default {
           alert('Erreur serveur')
         })
       }
+    },
+    deleteUser(id) {
+      UserApi.deleteUser(id)
+      .then(response => {
+        console.log(response)
+        if(response.status === 204) {
+          this.$router.push({name: "Users"}).catch(()=>{})
+        }
+      })
+      .catch(console.error)
     }
   },
   filters: {
