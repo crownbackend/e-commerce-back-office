@@ -17,22 +17,19 @@ export default [
         _children: ['Catalogue']
       },
       {
-        _name: 'CSidebarNavDropdown',
-        name: 'Buttons',
-        route: '/buttons',
-        icon: 'cil-cursor',
-        items: [
-          {
-            name: 'Buttons',
-            to: '/buttons/standard-buttons'
-          },
-        ]
-      },
-      {
         _name: 'CSidebarNavItem',
         name: 'Utilisateurs',
         to: '/users',
-        icon: 'cil-user'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Produits',
+        to: '/products',
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Type de produit',
+        to: '/type-product',
       },
       {
         _name: 'CSidebarNavDivider',

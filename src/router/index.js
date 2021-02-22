@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from "../store"
-import UserApi from "@/services/UserApi";
+import UserApi from "@/services/UserApi"
 
 // Containers
 const TheContainer = () => import('@/containers/TheContainer')
@@ -9,6 +9,8 @@ const TheContainer = () => import('@/containers/TheContainer')
 // Views
 const Dashboard = () => import('@/views/Dashboard')
 
+// login
+const Login = () => import('@/components/security/Login')
 
 // Users
 const Users = () => import('@/components/users/Users')
@@ -16,8 +18,10 @@ const User = () => import('@/components/users/User')
 const UserEdit = () => import('@/components/users/EditUser')
 const UserCreate = () => import('@/components/users/CreateUser')
 
-// login
-const Login = () => import('@/components/security/Login')
+// Products
+const Products = () => import("@/components/product/Products")
+const TypeProduct = () => import("@/components/type/TypeProduct")
+const CreateProduct = () => import("@/components/type/CreateType")
 
 Vue.use(Router)
 const router = new Router({
@@ -75,11 +79,53 @@ function configRoutes () {
             }
           ]
         },
+        {
+          path:'products',
+          meta: {
+            label: "Products"
+          },
+          component: {
+            render(c) {
+              return c('router-view')
+            }
+          },
+          children: [
+            {
+              path: '',
+              name: 'Products',
+              component: Products
+            }
+          ]
+        },
+        {
+          path:'type-product',
+          meta: {
+            label: "Type product"
+          },
+          component: {
+            render(c) {
+              return c('router-view')
+            }
+          },
+          children: [
+            {
+              path: '',
+              name: 'TypeProduct',
+              component: TypeProduct
+            },
+            {
+              path: 'create-type-product',
+              name: 'CreateProduct',
+              component: CreateProduct
+            }
+          ]
+        },
       ],
       meta: {
         requiresAuth: true
-      }
+      },
     },
+
     {
       path: "/account/login",
       name: 'Login',
