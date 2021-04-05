@@ -23,7 +23,7 @@
                 </div>
               </div>
             </div>
-            <CButton color="primary" type="submit" class="px-4">Sauvegarder  <CSpinner size="sm" color="info"/></CButton>
+            <CButton color="primary" type="submit" class="px-4" :class="{'btn-submit': disabled}" :disabled="disabled">Sauvegarder  <CSpinner v-if="spinner" size="sm" color="info"/></CButton>
           </form>
         </div>
       </CCardBody>
@@ -41,25 +41,36 @@ export default {
       name: null,
       content: [
         {name: ''}
-      ]
+      ],
+      spinner: false,
+      disabled: true,
     }
   },
   methods: {
     submitForm() {
-      console.log(this.name, this.content)
+      this.spinner = true
       let data = {
         name: this.name,
         content: this.content
       }
       ProductTypeApi.createType(data)
       .then(response => {
-        console.log(response)
+        this.spinner = false
+        if(response.data.created == 1) {
+          this.$router.push({name: "TypeProduct"})
+        }
       })
-      .catch(console.error)
+      .catch(() => {
+        alert('Erreur serveur')
+      })
 
     },
     checkFormValid() {
-
+      if(this.name && this.content) {
+        this.disabled = false
+      } else {
+        this.disabled = true
+      }
     },
     addContent() {
       this.content.push({

@@ -42,16 +42,16 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in users" v-bind:key="user.id">
-              <th scope="row">{{user.firstName}}</th>
+            <tr v-for="type in typeProduct" v-bind:key="type.id">
+              <th scope="row">{{type.name}}</th>
               <td>
-                <router-link :to="{name: 'User', params: {id: user.id}}" class="btn btn-primary">
+                <router-link :to="{name: 'User', params: {id: type.id}}" class="btn btn-primary">
                   <i class="far fa-eye"></i>
                 </router-link>
-                <router-link :to="{name: 'UserEdit', params: {id: user.id}}" class="btn btn-warning">
+                <router-link :to="{name: 'UserEdit', params: {id: type.id}}" class="btn btn-warning">
                   <i class="far fa-edit"></i>
                 </router-link>
-                <button @click="deleteUser(user.id)" class="btn btn-danger">
+                <button @click="deleteType(type.id)" class="btn btn-danger">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </td>
@@ -68,7 +68,32 @@
 </template>
 
 <script>
+import ProductTypeApi from "@/services/ProductTypeApi";
+
 export default {
-  name: "TypeProduct"
+  name: "TypeProduct",
+  data() {
+    return {
+      typeProduct: [],
+      filter: 1,
+      showMore: true,
+      collapse: false,
+      search: null,
+      typeProductCount: null
+    }
+  },
+  mounted() {
+    ProductTypeApi.getAllType()
+    .then(response => {
+      console.log(response)
+      this.typeProduct = response.data
+    })
+    .catch(console.error)
+  },
+  methods: {
+    deleteType(id) {
+      console.log(id)
+    }
+  }
 }
 </script>

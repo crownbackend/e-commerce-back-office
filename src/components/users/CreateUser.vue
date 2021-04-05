@@ -232,11 +232,5 @@ export default {
   padding-top: 5px;
   padding-bottom: 5px;
 }
-.btn-submit {
-  border: 1px solid transparent;
-  color: #cad1d9;
-  background-color: #f4f6f7;
-  pointer-events: none;
-  cursor: not-allowed;
-}
+
 </style>
